@@ -31,6 +31,9 @@ foreach (dep IN LISTS possible_subprojects)
     include(thirdparty/build-${dep_lower}.cmake)
 endforeach ()
 
+file(TO_CMAKE_PATH "${CMAKE_MODULE_PATH}" CMAKE_MODULE_PATH)
+message(STATUS "Module Path: ${CMAKE_MODULE_PATH}")
+
 set(CORE_INCLUDE src/core)
 
 
