@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.16)
+project(tinyxml2-download)
+
+include(ExternalProject)
+
+ExternalProject_Add(tinyxml2
+        GIT_REPOSITORY    "https://gitee.com/Alpha2Mao/tinyxml2.git"
+        GIT_TAG           "9.0.0"
+        SOURCE_DIR        "${CMAKE_BINARY_DIR}/dependencies/tinyxml2/src"
+        BINARY_DIR        "${CMAKE_BINARY_DIR}/dependencies/tinyxml2/build"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND     ""
+        INSTALL_COMMAND   ""
+        TEST_COMMAND
+        )
