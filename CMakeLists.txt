@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 project(L_Bike)
 
+set(ENV{http_proxy} "http://127.0.0.1：7890")
+set(ENV{https_proxy} "http://127.0.0.1:7890")
+
 set(CMAKE_CXX_STANDARD 14)
 
 #set(as_subproject eCAL)
@@ -53,9 +56,8 @@ foreach(dep IN LISTS possible_subprojects)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/${dep} ${CMAKE_BINARY_DIR}/dependencies/${dep}/prebuild)
 endforeach()
 
-
-
-message("The cmake prefix path is ${CMAKE_PREFIX_PATH}")
+message(${CMAKE_CURRENT_LIST_DIR})
+include_directories(${CMAKE_CURRENT_LIST_DIR}/src/include)
 
 find_package(tinyxml2 CONFIG REQUIRED)
 if(tinyxml2_FOUND)
@@ -67,7 +69,7 @@ if(glog_FOUND)
     message(STATUS "The glog version is ${glog_VERSION}")
 endif()
 
-add_executable(test_main main.cpp)
+add_executable(test_main main.cpp src/src/utils/time.c)
 
 target_link_libraries(test_main PRIVATE tinyxml2::tinyxml2 glog::glog)
 
