@@ -13,3 +13,9 @@ bicycle GPS position upload
 cmake -Bbuild -Hiceoryx_meta -DCMAKE_PREFIX_PATH=$(PWD)/build/dependencies/ -DBUILD_TEST=ON -DINTROSPECTION=OFF -DBINDING_C=ON -DEXAMPLES=ON
 ```
 
+
+## Process
+- [x] Project init
+- [ ] add mqtt
+- [ ] implement thread pool
+

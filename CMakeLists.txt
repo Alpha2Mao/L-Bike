@@ -58,15 +58,15 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/src/include)
 
 find_package(tinyxml2 CONFIG REQUIRED)
 if(tinyxml2_FOUND)
-    message(STATUS "The tinyxml2 version is ${tinyxml2_VERSION}")
+    message(STATUS "The tinyxml2 >>>>>> Found <<<<< version is ${tinyxml2_VERSION}")
 endif()
 
 find_package(glog CONFIG REQUIRED)
 if(glog_FOUND)
-    message(STATUS "The glog version is ${glog_VERSION}")
+    message(STATUS "The glog >>>>>> Found <<<<< version is ${glog_VERSION}")
 endif()
 
-add_executable(test_main main.cpp src/src/utils/time.c)
+add_executable(test_main main.cpp src/src/utils/time.c src/src/utils/config.cpp)
 
 target_link_libraries(test_main PRIVATE tinyxml2::tinyxml2 glog::glog)
 
