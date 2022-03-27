@@ -5,6 +5,7 @@
 #include "utils/config.h"
 
 using namespace google;
+using namespace std;
 
 int main(int argc, char **argv) {
     InitGoogleLogging(argv[0]);
@@ -16,7 +17,7 @@ int main(int argc, char **argv) {
     utils_time_point_value_t time_now;
     utils_system_time_now(&time_now);
     LOG(INFO) << " The time_now is " << time_now;
-    LBike::Config *config = LBike::init();
+    LBike::Config *config = LBike::Config::getInstance();
+    string mqtt_ip = config->getConfigStringValue(LBike::MQTT_IP);
     return 0;
-
 }

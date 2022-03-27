@@ -7,13 +7,16 @@
 #include "tinyxml2.h"
 #include <string>
 #include <map>
+#include "config_define.h"
 
 using namespace std;
+using namespace tinyxml2;
 
 namespace LBike{
     enum LBIKE_CONFIG{
         LOG_DIR,
         MQTT_IP,
+        MQTT_PASSWORD,
     };
 
     typedef struct config_item_s{
@@ -23,29 +26,35 @@ namespace LBike{
 
     static config_item_t config_list[] = {
             {LBIKE_CONFIG::LOG_DIR, "log_dir"},
-            {LBIKE_CONFIG::MQTT_IP, "mqtt_ip"}
+            {LBIKE_CONFIG::MQTT_IP, "mqtt_ip"},
+            {LBIKE_CONFIG::MQTT_PASSWORD, "mqtt_password"}
     };
-
-
-
-    class Config;
-
-    Config *init();
-
 
     class Config {
     public:
-        Config();
-        string getConfigStringValue(LBIKE_CONFIG configId, string defaultStringValue);
-        int getConfigIntValue(LBIKE_CONFIG configId, int defaultIntValue);
+        string getConfigStringValue(LBIKE_CONFIG configId, string defaultStringValue = "");
+        int getConfigIntValue(LBIKE_CONFIG configId, int defaultIntValue = 0);
+
+        static Config *getInstance();
+
+        Config(Config const&) = delete;
+        Config& operator=(Config const&) = delete;
 
 
     protected:
         void init_config_map();
 
     private:
+        string getConfigStringValueInternal(LBIKE_CONFIG configId, string defaultStringValue);
+        int getConfigIntValueInternal(LBIKE_CONFIG configId, int defaultIntValue);
+        Config();
+        ~Config();
+
+    private:
         FILE *fp;
         map<int, string> config_map;
+        static Config *instance;
+        XMLDocument doc;
     };
 }
 
