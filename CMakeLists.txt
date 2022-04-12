@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(L_Bike)
+project(L_Bike VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -66,13 +66,46 @@ if(glog_FOUND)
     message(STATUS "The glog >>>>>> Found <<<<< version is ${glog_VERSION}")
 endif()
 
-add_executable(test_main main.cpp src/src/utils/time.c src/src/utils/config.cpp)
+include(cmake/lbikeversions.cmake)
+
+add_executable(test_main
+        main.cpp
+        src/src/utils/time.c
+        src/src/utils/config.cpp)
+
+target_include_directories(test_main
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/generated/lbike/include>
+        $<INSTALL_INTERFACE:include/${PREFIX}>
+        )
+
+message(STATUS "Include  directory is ${CMAKE_INCLUDE_PATH}")
 
 target_link_libraries(test_main PRIVATE tinyxml2::tinyxml2 glog::glog)
 
 
-file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/log")
+file(MAKE_DIRECTORY  "${CMAKE_BINARY_DIR}/log")
 message(STATUS "The CMAKE_BINARY_DIR path is ${CMAKE_BINARY_DIR}")
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+        "${PROJECT_NAME}ConfigVersion.cmake"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion)
+
+set(CMAKE_INSTALL_LIBDIR "lib")
+message(STATUS "The CMAKE_INSTALL_LIBDIR path is ${CMAKE_INSTALL_LIBDIR}")
+set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+message(STATUS "The CMAKE_INSTALL_CMAKEDIR is ${CMAKE_INSTALL_CMAKEDIR}")
+
+install(
+        FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+        DESTINATION ${CMAKE_INSTALL_CMAKEDIR}
+        COMPONENT dev
+)
+
+message(STATUS "The cmake_install_includedir is ${CMAKE_INSTALL_INCLUDEDIR}")
 
 message("")
 message("thirdparty is as following:")
@@ -83,6 +116,7 @@ message("")
 message("")
 message("Build Properties")
 message("   project name.................: ${CMAKE_PROJECT_NAME}")
+message("   project version .............: ${PROJECT_VERSION}")
 message("   c compiler...................: ${CMAKE_C_COMPILER}")
 message("   c++ compiler.................: ${CMAKE_CXX_COMPILER}")
 message("   cmake version................: ${CMAKE_VERSION}")
