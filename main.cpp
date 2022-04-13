@@ -5,9 +5,20 @@
 #include "utils/config.h"
 #include "lbike_versions.hpp"
 #include <thread>
+#include "utils/lbike_timer.h"
+#include <cstdlib>
 
 using namespace google;
 using namespace std;
+
+void printApplicationInfo() {
+    LOG(INFO) << "============================================";
+    LOG(INFO) << LBIKE_LATEST_RELEASE_VERSION;
+    LOG(INFO) << LBIKE_BUILDDATE;
+    LOG(INFO) << LBIKE_SHA1;
+    LBIKE_PRINT_BUILDINFO();
+
+}
 
 int main(int argc, char **argv) {
     // init glog module
@@ -33,5 +44,10 @@ int main(int argc, char **argv) {
     string mqtt_ip = config->getConfigStringValue(LBike::MQTT_IP);
     LOG(WARNING) << "The mqtt ip is " << mqtt_ip;
 
-    return 0;
+//    std::shared_ptr<lbike::Timer> testTimer = std::make_shared<lbike::Timer>();
+//    testTimer->Start(0, &printApplicationInfo, 2000);
+//    for (;;){
+//
+//    }
+    return EXIT_SUCCESS;
 }

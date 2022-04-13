@@ -71,7 +71,8 @@ include(cmake/lbikeversions.cmake)
 add_executable(test_main
         main.cpp
         src/src/utils/time.c
-        src/src/utils/config.cpp)
+        src/src/utils/config.cpp
+        src/src/utils/lbike_timer.cpp)
 
 target_include_directories(test_main
         PUBLIC
