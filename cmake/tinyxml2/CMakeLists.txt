@@ -13,6 +13,10 @@ if (NOT N EQUAL 0)
     endif()
 endif()
 
+if (DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(TOOLCHAIN_FILE "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
+endif ()
+
 # set download config, source and build paths
 set(DOWNLOAD_CONFIG_DIR ${CMAKE_BINARY_DIR}/dependencies/tinyxml2/download)
 set(SOURCE_DIR  ${CMAKE_BINARY_DIR}/dependencies/tinyxml2/src)
@@ -22,7 +26,7 @@ set(INSTALL_DIR ${CMAKE_BINARY_DIR}/dependencies/install)
 # Download and unpack tinyxml2 at configure time
 configure_file(tinyxml2.cmake.in ${DOWNLOAD_CONFIG_DIR}/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} ${ENABLE_STATIC_DEBUG} -G "${CMAKE_GENERATOR}" "${COMPILER_FLAGS}"
-        "${DOWNLOAD_CONFIG_DIR}"
+        "${TOOLCHAIN_FILE}" "${DOWNLOAD_CONFIG_DIR}"
         RESULT_VARIABLE result
         WORKING_DIRECTORY ${DOWNLOAD_CONFIG_DIR})
 
@@ -48,7 +52,7 @@ if(result)
     message(FATAL_ERROR "CMake Step [download] for ${name} failed: ${result}")
 endif()
 
-execute_process(COMMAND ${CMAKE_COMMAND} ${ENABLE_STATIC_DEBUG}  -G "${CMAKE_GENERATOR}"
+execute_process(COMMAND ${CMAKE_COMMAND} ${ENABLE_STATIC_DEBUG}  -G "${CMAKE_GENERATOR}" "${TOOLCHAIN_FILE}"
         "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}" "{EXTRA_CMAKE_ARGS}" "${SOURCE_DIR}"
         RESULT_VARIABLE result
         WORKING_DIRECTORY ${BUILD_DIR})
@@ -56,7 +60,6 @@ execute_process(COMMAND ${CMAKE_COMMAND} ${ENABLE_STATIC_DEBUG}  -G "${CMAKE_GEN
 if(result)
     message(FATAL_ERROR "Build step [configure] for ${name} failed: ${result}")
 endif()
-
 
 execute_process(COMMAND ${CMAKE_COMMAND} --build . --target install ${CMAKE_BUILD_FLAGS}
         RESULT_VARIABLE result
