@@ -150,4 +150,13 @@ message("   c++ compiler.................: ${CMAKE_CXX_COMPILER}")
 message("   cmake version................: ${CMAKE_VERSION}")
 message("")
 
+
+
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Alpha2Mao")
+set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+set(CPACK_PACKAGE_CONTACT "2328119758@qq.com")
+set(CPACK_PACKAGE_DESCRIPTION "Super Bike")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Alpha2Mao 2328119758@qq.com")
+set(CPACK_SOURCE_IGNORE_FILES "root")
 include(CPack)
