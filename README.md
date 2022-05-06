@@ -4,9 +4,9 @@
 ![GitHub](https://img.shields.io/github/license/Alpha2Mao/L-Bike)
 ![coverity](https://scan.coverity.com/projects/24516/badge.svg)
 
-bicycle GPS position upload
-
 ## Introduction
+This application is used upload vehicle data to TSP platform based on Raspberry Pi 4B, the transport protocols is mqtt.
+
 ## Get Started
 - ###Build
 ```shell
@@ -15,7 +15,24 @@ cmake -Bbuild -Hiceoryx_meta -DCMAKE_PREFIX_PATH=$(PWD)/build/dependencies/ -DBU
 - ### Cross build for raspberry
 ```shell
 sudo apt install crossbuild-essential-arm64
+cmake -B build_aarch64 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./cmake/raspberrypi-toolchain.cmake
+cd build_aarch64
+make
+make package # L_Bike-0.0.1-Linux.deb deb格式安装包打包
+# 或使用如下命令打包
+cpack -G DEB
+# rpm格式包打包
+cpack -G RPM
 ```
+- ### Supported Platforms
+| Operating System |              supports              |
+|------------------|:----------------------------------:|
+| Linux            |                yes                 |
+| MacOS            |                yes                 |
+| Raspberry Pi     |                yes                 |
+| Windows 10       |   no, planned for implementation   |
+| QNX              | no, not planned for implementation |
+
 
 
 ## Process

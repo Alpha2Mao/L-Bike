@@ -102,7 +102,10 @@ target_include_directories(super_bike
 
 target_link_libraries(super_bike PRIVATE tinyxml2::tinyxml2 glog::glog)
 
-set_target_properties(super_bike PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+set_target_properties(super_bike PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX}
+        POSITION_INDEPENDENT_CODE ON
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_INSTALL_BINDIR}"
+        VERSION ${PROJECT_VERSION})
 
 
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/log")
@@ -127,13 +130,14 @@ install(
 )
 
 install(TARGETS super_bike
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib/static
         PUBLIC_HEADER DESTINATION include
         )
 
 message(STATUS "The cmake_install_includedir is ${CMAKE_INSTALL_INCLUDEDIR}")
+message(STATUS "The cmake_install_bin_path is ${CMAKE_INSTALL_BINDIR}")
 
 message("")
 message("thirdparty is as following:")
