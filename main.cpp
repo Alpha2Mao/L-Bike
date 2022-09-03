@@ -7,6 +7,7 @@
 #include <thread>
 #include "utils/lbike_timer.h"
 #include <cstdlib>
+#include <getopt.h>
 
 using namespace google;
 using namespace std;
@@ -20,14 +21,66 @@ void printApplicationInfo() {
 
 }
 
-int main(int argc, char **argv) {
+static void __attribute__ ((__noreturn__))
+Usage(FILE *out) {
+    fputs(USAGE_HEADER, out);
+    fprintf(out, " %s [options] [variable[=value] ...]\n", "lbike");
+    fputs(USAGE_OPTIONS, out);
+    fputs("  -a, --all            display all configure variable\n", out);
+    fputs("  -r, --remote         set remote server ip address\n", out);
+    fputs("  -p, --port           set remove server port\n", out);
+    fputs(USAGE_SEPARATOR, out);
+    fputs(USAGE_HELP, out);
+    fputs(USAGE_VERSION, out);
+
+    exit(out == stderr ? EXIT_FAILURE : EXIT_SUCCESS);
+}
+
+static const struct option longopts[] = {
+        {"all", no_argument, NULL, 'a'},
+        {"remote", no_argument, NULL, 'r'},
+        {"port", no_argument, NULL, 'p'},
+        {NULL, 0, NULL, 0}
+};
+
+/**
+ * init glog module
+ */
+static void initGlog(int argc, char **argv) {
     // init glog module
     InitGoogleLogging(argv[0]);
-    SetLogDestination(INFO, "./log/LBike_log");
+    SetLogDestination(INFO, LBIKE_LOG_PATH);
     FLAGS_alsologtostderr = true;
     FLAGS_colorlogtostderr = true;
     FLAGS_timestamp_in_logfile_name= false;
     FLAGS_max_log_size = 1;
+}
+
+
+int main(int argc, char **argv) {
+    initGlog(argc, argv);
+
+    int optc = 0;
+    while ((optc = getopt_long(argc, argv, "arphv", longopts, NULL)) != -1) {
+        switch (optc) {
+            case 'a':
+                LOG(INFO) << "Print all the config info";
+                break;
+            case 'r':
+                LOG(INFO) << "Set remote ip is ";
+                break;
+            case 'p':
+                LOG(INFO) << "Set remove port is ";
+                break;
+            case 'h':
+                Usage(stdout);
+            case 'v':
+                printApplicationInfo();
+                return EXIT_SUCCESS;
+            default:
+                Usage(stderr);
+        }
+    }
 
     // print application info
     LOG(INFO) << LBIKE_LATEST_RELEASE_VERSION;

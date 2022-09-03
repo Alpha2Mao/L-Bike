@@ -30,6 +30,10 @@ set(lbike_config_dir                ${eCAL_BINARY_DIR}/cmake/)
 set(lbike_config                    ${eCAL_config_dir}/LBikeConfig.cmake)
 set(lbike_config_version            ${eCAL_config_dir}/LBikeConfigVersion.cmake)
 
+if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    add_compile_definitions(DEBUG)
+endif()
+add_compile_options(-Wall)
 
 # For each dependency, check if option to build was set or not
 # if so append to `as_subproject` list
@@ -78,12 +82,12 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/src/include)
 
 find_package(tinyxml2 CONFIG REQUIRED)
 if (tinyxml2_FOUND)
-    message(STATUS "The tinyxml2 >>>>>> Found <<<<< version is ${tinyxml2_VERSION}")
+    message(STATUS ">>>>>>>>>>>>>>>>>>>> Found tinyxml2 ${tinyxml2_VERSION} <<<<<<<<<<<<<<<<<<<<")
 endif ()
 
 find_package(glog CONFIG REQUIRED)
 if (glog_FOUND)
-    message(STATUS "The glog >>>>>> Found <<<<< version is ${glog_VERSION}")
+    message(STATUS ">>>>>>>>>>>>>>>>>>>> Found glog ${glog_VERSION} <<<<<<<<<<<<<<<<<<<<")
 endif ()
 
 include(cmake/lbikeversions.cmake)
@@ -152,15 +156,6 @@ message("   project version .............: ${PROJECT_VERSION}")
 message("   c compiler...................: ${CMAKE_C_COMPILER}")
 message("   c++ compiler.................: ${CMAKE_CXX_COMPILER}")
 message("   cmake version................: ${CMAKE_VERSION}")
-message("")
 
-
-
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Alpha2Mao")
-set(CPACK_GENERATOR "DEB")
-set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
-set(CPACK_PACKAGE_CONTACT "2328119758@qq.com")
-set(CPACK_PACKAGE_DESCRIPTION "Super Bike")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Alpha2Mao 2328119758@qq.com")
-set(CPACK_SOURCE_IGNORE_FILES "root")
+include(cmake/CPackConfig.cmake)
 include(CPack)
